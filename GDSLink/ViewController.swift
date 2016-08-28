@@ -12,9 +12,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
      var linksA = [String]()
 
+    @IBOutlet var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // uel : 
         
         let myURLString = "https://drive.google.com/file/d/0B1XhqDeOfqG7UWZSaG1ZbFFhSzQ/preview"
         
@@ -46,7 +48,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                         
                         linksA.append(url)
                         
-                     //   tableView.reloadData()
+                        tableView.reloadData()
                         
                     }
                     
@@ -79,6 +81,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         cell.textLabel?.text = linksA[indexPath.row]
         return cell
         
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -97,7 +100,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             let indexPaths = tableView.indexPathForSelectedRow
             // let indexPath = indexPaths![0] as NSIndexPath
             let indexPath = indexPaths! as NSIndexPath
-            let detailVC = segue.destinationViewController as! ViewController
+            let detailVC = segue.destinationViewController as! testView
             detailVC.urls = self.linksA[indexPath.row]
             
         }
