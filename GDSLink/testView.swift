@@ -8,21 +8,20 @@
 
 import UIKit
 
-
-
 class testView : UIViewController {
     
     var urls : String!
     
+    // test
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let t = urls.stringByReplacingOccurrencesOfString(",35", withString: " ")
         
-        let fullNameArr = t.characters.split{$0 == "|"}.map(String.init)
+        let deUrl = t.characters.split{$0 == "|"}.map(String.init)
         
-                let encoded = fullNameArr[0]
+        let encoded = deUrl[0]
         
 
         print("url : \(encoded)")
