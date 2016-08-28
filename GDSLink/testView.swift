@@ -17,7 +17,7 @@ class testView : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let t = urls.stringByReplacingOccurrencesOfString(",35", withString: " ")
+        let t = urls.stringByReplacingOccurrencesOfString(",35", withString: "")
         
         let deUrl = t.characters.split{$0 == "|"}.map(String.init)
         
@@ -25,6 +25,8 @@ class testView : UIViewController {
         
 
         print("url : \(encoded)")
+        
+        
 
     }
     

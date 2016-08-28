@@ -13,11 +13,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
      var linksA = [String]()
 
     @IBOutlet var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
+            
         let myURLString = "https://drive.google.com/file/d/0B1XhqDeOfqG7UWZSaG1ZbFFhSzQ/preview"
         
         if let myURL = NSURL(string: myURLString) {
