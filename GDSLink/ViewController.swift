@@ -7,16 +7,21 @@
 //
 
 import UIKit
+import AVKit
+import AVFoundation
+import MediaPlayer
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+
+class ViewController: UIViewController {
     
      var linksA = [String]()
 
-    @IBOutlet var tableView: UITableView!
+    var streamLink : String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // I used This methode to get the HTML from the Web Page
             
         let myURLString = "https://drive.google.com/file/d/0B1XhqDeOfqG7UWZSaG1ZbFFhSzQ/preview"
         
@@ -27,36 +32,30 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                
                 let t = myHTMLString
                 
-
                 if let rangeOfZero = t.rangeOfString("plid", options: NSStringCompareOptions.BackwardsSearch) {
-                    
                     
                     let suffix = String(t.characters.suffixFrom(rangeOfZero.endIndex))
                     
                     //    print(suffix)
-                
+                    
                     let input = "\(suffix)"
                     let detector = try! NSDataDetector(types: NSTextCheckingType.Link.rawValue)
                     let matches = detector.matchesInString(input, options: [], range: NSRange(location: 0, length: input.utf16.count))
                     
                     //  print(matches)
-                    
-                    
                     for match in matches {
                         
                         let url = (input as NSString).substringWithRange(match.range)
                         
                         linksA.append(url)
                         
-                        tableView.reloadData()
-                        
                     }
+                
+                    theLink()
                     
                 } else {
                     print("noooo")
                 }
- 
-                
             } catch {
                 print("Error : \(error)")
             }
@@ -64,48 +63,45 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             print("Error: \(myURLString) doesn't  URL")
         }
         
-
     }
     
-    
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return linksA.count
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
-        cell.textLabel?.text = linksA[indexPath.row]
-        return cell
+    func theLink() {
         
+        let firstElement = linksA.first
+    
+        let t = firstElement!.stringByReplacingOccurrencesOfString(",35", withString: "")
         
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier("show", sender: self)
-    }
-    
-    override  func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let deUrl = t.characters.split{$0 == "|"}.map(String.init)
         
-        if (segue.identifier == "show") {
-            
-            let indexPaths = tableView.indexPathForSelectedRow
-            // let indexPath = indexPaths![0] as NSIndexPath
-            let indexPath = indexPaths! as NSIndexPath
-            let detailVC = segue.destinationViewController as! testView
-            detailVC.urls = self.linksA[indexPath.row]
-            
+        let link = deUrl[0]
+        
+        // the link needs to be decoded
+        
+        print("URL : \(link)")
+        
+        // you can see how the link should look like here :
+        // http://ddecode.com/hexdecoder/?results=d82d4e564eccc1a6b96ee7c5c1e1c3b2
+        
+        streamLink = link
+        
+      //  playVideo()
+    }
+    
+    func playVideo() {
+        
+        let url = NSURL(string: streamLink)!
+        
+        let player = AVPlayer(URL: url)
+        
+        let playerViewController = AVPlayerViewController()
+        
+        playerViewController.player = player
+        
+        self.presentViewController(playerViewController, animated: true) {
+            playerViewController.player?.play()
         }
-    }
 
+    }
 
 
 }
