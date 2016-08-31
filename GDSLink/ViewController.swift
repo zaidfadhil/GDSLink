@@ -11,7 +11,6 @@ import AVKit
 import AVFoundation
 import MediaPlayer
 
-
 class ViewController: UIViewController {
     
      var linksA = [String]()
@@ -40,7 +39,7 @@ class ViewController: UIViewController {
                     
                     let input = "\(suffix)"
                     let detector = try! NSDataDetector(types: NSTextCheckingType.Link.rawValue)
-                    let matches = detector.matchesInString(input, options: [], range: NSRange(location: 0, length: input.utf16.count))
+                    let matches = detector.matchesInString(input, options: [], range: NSRange(location: 0, length: input.utf8.count))
                     
                     //  print(matches)
                     for match in matches {
@@ -67,6 +66,12 @@ class ViewController: UIViewController {
     
     func theLink() {
         
+        
+        /// /[u]00../g
+        
+        
+        
+        
         let firstElement = linksA.first
     
         let t = firstElement!.stringByReplacingOccurrencesOfString(",35", withString: "")
@@ -81,6 +86,24 @@ class ViewController: UIViewController {
         
         // you can see how the link should look like here :
         // http://ddecode.com/hexdecoder/?results=d82d4e564eccc1a6b96ee7c5c1e1c3b2
+        
+        
+        
+        let regex = try! NSRegularExpression(pattern: "[\\\\][u]00..",
+                                             options: NSRegularExpressionOptions.CaseInsensitive)
+        let range = NSMakeRange(0, link.characters.count)
+//        let modString = regex.stringByReplacingMatchesInString(link,
+//                                                               options: [],
+//                                                               range: range,
+//                                                               withTemplate: "XXX")
+//        
+       // regex.matchesInString(link, options: [], range: range)
+        
+        
+        print(regex.matchesInString(link, options: [], range: range))
+
+        
+        
         
         streamLink = link
         
@@ -103,6 +126,6 @@ class ViewController: UIViewController {
 
     }
 
-
+    
 }
 
