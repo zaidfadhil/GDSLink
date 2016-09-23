@@ -16,8 +16,24 @@
                     <view key="view" contentMode="scaleToFill" id="WBI-ja-wGx">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DbO-z8-G5Y">
+                                <rect key="frame" x="277" y="285" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="actionB:" destination="9GP-xn-ldf" eventType="touchUpInside" id="yJU-sF-OFU"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="DbO-z8-G5Y" firstAttribute="centerX" secondItem="WBI-ja-wGx" secondAttribute="centerX" id="otH-Y9-REr"/>
+                            <constraint firstItem="DbO-z8-G5Y" firstAttribute="centerY" secondItem="WBI-ja-wGx" secondAttribute="centerY" id="tjP-DF-5LL"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="start" destination="DbO-z8-G5Y" id="t1P-pI-vpj"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IRu-qw-w9a" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

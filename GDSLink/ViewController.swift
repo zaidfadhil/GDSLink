@@ -17,12 +17,17 @@ class ViewController: UIViewController {
 
     var streamLink : String!
     
+    var first : String!
+    
+    var secend : String!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // I used This methode to get the HTML from the Web Page
             
-        let myURLString = "https://drive.google.com/file/d/0B1XhqDeOfqG7UWZSaG1ZbFFhSzQ/preview"
+        let myURLString = "https://drive.google.com/file/d/0B6cdjKm0M2M-MWQzRjdMblJOX3c/preview"
         
         if let myURL = NSURL(string: myURLString) {
             
@@ -31,27 +36,31 @@ class ViewController: UIViewController {
                
                 let t = myHTMLString
                 
-                if let rangeOfZero = t.rangeOfString("plid", options: NSStringCompareOptions.BackwardsSearch) {
+                if let rangeOfZero = t.rangeOfString("[\"fmt_stream_map\"", options: NSStringCompareOptions.BackwardsSearch) {
                     
                     let suffix = String(t.characters.suffixFrom(rangeOfZero.endIndex))
                     
-                    //    print(suffix)
+                    first = suffix
                     
-                    let input = "\(suffix)"
-                    let detector = try! NSDataDetector(types: NSTextCheckingType.Link.rawValue)
-                    let matches = detector.matchesInString(input, options: [], range: NSRange(location: 0, length: input.utf8.count))
-                    
-                    //  print(matches)
-                    for match in matches {
+                  //  print(suffix)
+                    if let rangeOne = first.rangeOfString(",[\"fmt_list\"", options: NSStringCompareOptions.BackwardsSearch) {
+                        let endffix = String(first.characters.prefixUpTo(rangeOne.startIndex))
                         
-                        let url = (input as NSString).substringWithRange(match.range)
                         
-                        linksA.append(url)
+                        
+                        
+                         let v = endffix.stringByReplacingOccurrencesOfString("\"", withString: "")
+                        let x = v.stringByReplacingOccurrencesOfString("]", withString: "")
+                        
+                        
+                        secend = x
+                        
+                        print(x)
                         
                     }
-                
-                    theLink()
                     
+                    theLink()
+
                 } else {
                     print("noooo")
                 }
@@ -70,13 +79,18 @@ class ViewController: UIViewController {
         /// /[u]00../g
         
         
-        let firstElement = linksA.first
+     //   let firstElement = linksA.first
+        
+        let firstElement = secend
     
         let t = firstElement!.stringByReplacingOccurrencesOfString(",35", withString: "")
         
         let deUrl = t.characters.split{$0 == "|"}.map(String.init)
         
-        let link = deUrl[0]
+        let link = deUrl[1]
+        
+        // let link = deUrl[0] for high 
+        // let link = deUrl[2] for low
         
         // the link needs to be decoded
         
@@ -94,31 +108,21 @@ class ViewController: UIViewController {
         // 0026 : &
         
          let re = p.stringByReplacingOccurrencesOfString("003d", withString: "=")
-         let y = re.stringByReplacingOccurrencesOfString("0026", withString: "&")
-            let c = y.stringByReplacingOccurrencesOfString("%252C", withString: ",")
+       let w =  re.stringByReplacingOccurrencesOfString("0026", withString: "&")
+        let c = w.stringByReplacingOccurrencesOfString("%252C", withString: ",")
         
         print(c)
         
-//        let c = y.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
-//        print(c)
+        let r = c
+        streamLink = r
+
         
-//        let regex = try! NSRegularExpression(pattern: "[\\\\][u]00..",
-//                                             options: NSRegularExpressionOptions.CaseInsensitive)
-//        let range = NSMakeRange(0, link.characters.count)
-////        let modString = regex.stringByReplacingMatchesInString(link,
-////                                                               options: [],
-////                                                               range: range,
-////                                                               withTemplate: "XXX")
-////        
-//       // regex.matchesInString(link, options: [], range: range)
-//        
-//        
-//        print(regex.matchesInString(link, options: [], range: range))
+    }
+    @IBOutlet var start: UIButton!
+    
+    @IBAction func actionB(sender: AnyObject) {
         
-        
-        
-        
-        
+        playVideo()
     }
     
     func playVideo() {
